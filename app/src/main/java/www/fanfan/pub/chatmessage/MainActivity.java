@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         // Enable Local Datastore.
         Parse.enableLocalDatastore(this);
 
-        Parse.initialize(this, "8ejmNKzf0l63sdI18MuukakvLiWD6L2xtpQhdGzi", "NuxMakByXfaJ6VXlDRXOGPrK2fkxFUTEdlN6K592");
+        Parse.initialize(this, "KAimpzFF8jSa1QSJb0NSnMI4IHkCy4ppxHfEDJh7", "3DGoEbsicojMc74aKsl243DWQ6ooPSkzWaRQAkvP");
 
         final EditText inputBox = (EditText) findViewById(R.id.inputBox);
         chartBox = (ListView)findViewById(R.id.char_box);
