@@ -1,6 +1,7 @@
 package www.fanfan.pub.chatmessage;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -34,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,16 +60,20 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String str = inputBox.getText().toString();
-                sendMessage(str);
-                getMessage();
-               /* Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();*/
                 inputBox.setText("");
+                sendMessage(str);
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        getMessage();
+                    }
+                }, 500);
             }
         });
 
 
     }
+
     //push the message to the cloud
     public void sendMessage(String str){
         System.out.println("works");
@@ -80,12 +87,14 @@ public class MainActivity extends AppCompatActivity {
         postMessage.put(PARSE_OBJECT_COL_KEY_MESSAGE,message);
         postMessage.saveInBackground();
         postMessage.pinInBackground();
+
     }
     //pull message from cloud
     public void getMessage(){
         ParseQuery<ParseObject> query = ParseQuery.getQuery(PARSE_OBJECT);
         //query.fromLocalDatastore();
         query.whereNotEqualTo(PARSE_OBJECT_COL_KEY_MESSAGE, "");
+        query.addAscendingOrder("createdAt");
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> message, ParseException e) {
                 if (e == null) {

@@ -21,11 +21,26 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_main" />
+    <include layout="@layout/content_main"
 
-    <EditText
+        />
+
+    <RelativeLayout
         android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+
+
+    </RelativeLayout>
+    <EditText
+        android:inputType="textMultiLine"
+        android:lines="3"
+        android:minLines="3"
+        android:maxLines="6"
         android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:scrollbars="vertical"
         android:id="@+id/inputBox"
         android:layout_gravity="bottom|end"
         />
