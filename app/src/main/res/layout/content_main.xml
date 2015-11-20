@@ -12,17 +12,22 @@
     tools:context=".MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <ScrollView
+    <ListView
+        android:id="@+id/char_box"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:divider="@null"
+        android:stackFromBottom="true"
+        android:transcriptMode="normal"
+        android:dividerHeight="0dp">
 
-        <TextView
+       <!-- <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/text" />
+            android:text="@string/text" />-->
 
 
-    </ScrollView>
+    </ListView>
 
 
 
