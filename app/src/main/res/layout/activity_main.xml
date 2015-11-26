@@ -21,18 +21,10 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_main"
 
-        />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <include layout="@layout/content_main" />
 
 
-
-
-    </RelativeLayout>
     <EditText
         android:inputType="textMultiLine"
         android:lines="3"

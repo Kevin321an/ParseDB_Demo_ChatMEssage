@@ -2,4 +2,12 @@
     <string name="app_name">ChatMessage</string>
     <string name="action_settings">Settings</string>
     <string name="text">France is committe</string>
+
+    <string-array name="name">
+        <item>All</item>
+        <item>Ady</item>
+        <item>Tiago</item>
+        <item>Kevin</item>
+        <item>Lalit</item>
+    </string-array>
 </resources>

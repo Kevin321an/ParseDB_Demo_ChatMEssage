@@ -7,8 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import com.parse.FindCallback;
 import com.parse.Parse;
@@ -17,6 +19,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,12 +29,15 @@ public class MainActivity extends AppCompatActivity {
     public final static  String PARSE_OBJECT_COL_KEY_COLOR="color";
     public final static  String PARSE_OBJECT_COL_KEY_MESSAGE="message";
     final static private String COLOR_KEVIN="#FFC107";
+    final static private String TO="to";
 
 
     private  ViewAdapter mChartHistory;
     private List<ParseObject> chartHistory;
     private ListView chartBox;
     private int chartCounter=0;
+
+    private Spinner spinner;
 
 
 
@@ -55,19 +61,35 @@ public class MainActivity extends AppCompatActivity {
         getMessage();
 
 
+        //shoot the spinner
+        spinner = (Spinner) findViewById(R.id.eyeColor);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.name, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
+
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String str = inputBox.getText().toString();
-                inputBox.setText("");
-                sendMessage(str);
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    public void run() {
-                        getMessage();
-                    }
-                }, 500);
+                if (null != str || "" !=str){
+                    String to = spinner.getSelectedItem().toString();
+                    inputBox.setText("");
+                    sendMessage(str,to);
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        public void run() {
+                            getMessage();
+                        }
+                    }, 500);
+
+                }
+
             }
         });
 
@@ -75,7 +97,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //push the message to the cloud
-    public void sendMessage(String str){
+    public void sendMessage(String str, String to){
+
         System.out.println("works");
         ParseAnalytics.trackAppOpenedInBackground(getIntent());
         ParseObject  postMessage = new ParseObject(PARSE_OBJECT);
@@ -85,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
         postMessage.put(PARSE_OBJECT_COL_KEY_USER,usr);
         postMessage.put(PARSE_OBJECT_COL_KEY_COLOR,color);
         postMessage.put(PARSE_OBJECT_COL_KEY_MESSAGE,message);
+        postMessage.put(TO,to);
         postMessage.saveInBackground();
         postMessage.pinInBackground();
 
@@ -94,6 +118,8 @@ public class MainActivity extends AppCompatActivity {
         ParseQuery<ParseObject> query = ParseQuery.getQuery(PARSE_OBJECT);
         //query.fromLocalDatastore();
         query.whereNotEqualTo(PARSE_OBJECT_COL_KEY_MESSAGE, "");
+        String [] to = {"Kevin", "All"};
+        query.whereContainedIn(TO, Arrays.asList(to));
         query.addAscendingOrder("createdAt");
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> message, ParseException e) {
